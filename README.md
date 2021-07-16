@@ -11,6 +11,9 @@ There is a 500 requests per minute per IP limit. Also every request is cached by
 
 ### Available endpoints
 
+* **GET**  /pool
+* **GET**  /coin
+* **GET**  /coin/:coin
 * **GET**  /address/:address?coin=:coin
 * **GET**  /account/:uuid
 * **GET**  /account/:uuid/stats
@@ -19,6 +22,132 @@ There is a 500 requests per minute per IP limit. Also every request is cached by
 * **GET**  /account/:uuid/referrals
 
 ## Reference
+
+### GET  /pool
+
+Returns general pool stats.
+
+Input example: 
+
+```
+GET https://api.unminable.com/v4/pool
+```
+
+Output example:
+
+```
+{
+    "success": true,
+    "msg": "Ok",
+    "data": {
+        "summary": {
+            "total_paid_btc": "245.72662209", →  Total paid by the platform in BTC value
+            "past_24hr_miners": "56334", →  Past 24 hour miners (unique addresses) online.
+            "past_24hr_workers": "102861" →  Past 24 hour workers online.
+        },
+        "pools": {
+            "ethash": {
+                "last_reward": 1626406786, →  Time of the last credited reward, to any miner connected to the ethash pool (for all coins).
+                "avg_reward_time": 5 → Average time (in minutes) between rewards, calculated with data from past 24hr.
+            },
+            "etchash": {
+                "last_reward": 1626407003, →  Time of the last credited reward, to any miner connected to the etchash pool (for all coins).
+                "avg_reward_time": 4 → Average time (in minutes) between rewards, calculated with data from past 24hr.
+            },
+            "kawpow": {
+                "last_reward": 1626407110, →  Time of the last credited reward, to any miner connected to the kawpow pool (for all coins).
+                "avg_reward_time": 4 → Average time (in minutes) between rewards, calculated with data from past 24hr.
+            },
+            "randomx": {
+                "last_reward": 1626406990, →  Time of the last credited reward, to any miner connected to the randomx pool (for all coins).
+                "avg_reward_time": 6 → Average time (in minutes) between rewards, calculated with data from past 24hr.
+            }
+        }
+    }
+}
+```
+
+### GET  /coin
+
+Returns the full list of supported coins.
+
+Input example: 
+
+```
+GET https://api.unminable.com/v4/coin
+```
+
+Output example:
+
+```
+{
+    "success": true,
+    "msg": "Ok",
+    "data": [
+        {
+            "symbol": "BTT", → Coin symbol
+            "network": "TRX", → Coin network (supported network)
+            "token_standard": "TRC10", → Token type, if the coin is a token in a network.
+            "name": "BitTorrent", → Coin / Token name
+            "regex": "^T[1-9A-HJ-NP-Za-km-z]{33}$", → Validation RegExp (for address)
+            "regex_memo": null, →  Validation RegExp (for memo / payment tag)
+            "top": 1, → Indicates whether a coin should be at the top of the list (1) or not (0).
+            "logo": "https://www.unmineable.com/img/logos/BTT.png?v1" → Coin logo (hosted on the website)
+        },
+        {
+            "symbol": "MATIC",
+            "network": "ETH",
+            "token_standard": "ERC20",
+            "name": "MATIC (Polygon)",
+            "regex": "^(0x)[0-9A-Fa-f]{40}$",
+            "regex_memo": null,
+            "top": 1,
+            "logo": "https://www.unmineable.com/img/logos/MATIC.png"
+        },
+        {
+            "symbol": "SHIB",
+            "network": "ETH",
+            "token_standard": "ERC20",
+            "name": "SHIBA INU",
+            "regex": "^(0x)[0-9A-Fa-f]{40}$",
+            "regex_memo": null,
+            "top": 1,
+            "logo": "https://www.unmineable.com/img/logos/SHIB.png"
+        },
+        (...)
+    ]
+}
+```
+
+### GET  /coin/:coin
+
+Returns the details of a specific coin.
+
+Input example: 
+
+```
+GET https://api.unminable.com/v4/coin/DOGE
+```
+
+Output example:
+
+```
+{
+    "success": true,
+    "msg": "Ok",
+    "data": {
+        "symbol": "DOGE", → Coin symbol
+        "network": "DOGE", → Coin network (supported network)
+        "token_standard": null, → Token type, if the coin is a token in a network.
+        "name": "Dogecoin", → Coin / Token name
+        "regex": "^(D|A|9)[a-km-zA-HJ-NP-Z1-9]{33,34}$", → Validation RegExp (for address)
+        "regex_memo": null, → Validation RegExp (for memo / payment tag)
+        "payment_threshold": 30, → Coin payment threshold
+        "payment_enabled": true, → Indicates whether payments are enabled (true) or under maintenance (false)
+        "logo": "https://www.unmineable.com/img/logos/DOGE.png"
+    }
+}
+```
 
 ### GET  /address/:address?coin=:coin
 
