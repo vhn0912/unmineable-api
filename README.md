@@ -152,6 +152,7 @@ Output example:
 ### GET  /address/:address?coin=:coin
 
 Returns general stats (balance related) for a specific **address** and **coin**. This endpoint returns the **uuid** field which is used for every following endpoint.
+For addresses that require memo / payment tags, the tag must be added after the **address** separated by a **:** symbol, for example: A_VALID_XRP_ADDRESS:PAYMENT_TAG
 
 Input example: 
 
@@ -168,12 +169,22 @@ Output example:
  "data": {
      "balance": "10.26909",  →  Current total pending balance.
      "balance_payable": "10.26909",  →  Total pending payable balance (some coins like NEO doesn't have decimals, thus this value is different (rounded) from the "balance").
+     "precision": "8",  →  Balance decimal positions
      "payment_threshold": "15",  →  Current payment threshold.
      "mining_fee": "0.75",   →  Can also be: "1", if no referral code is being used.
      "auto": false,  →  Indicates whether auto payment is on (true) or off (false) for the address.
      "enabled": true, →  Indicates whether payments are enabled (true) or under maintenance (false).
+     "enabled_auto_only": false, →  Indicates whether only auto payments are enabled (true) or not (false), while payments are under maintenance (enabled = false).
      "uuid": "22d53b0b-24a2-4c1d-9f56-175d3a2e", →  Required for following requests.
-     "fresh": false →  Indicates if an address is new (true if haven't mined before, false if  it has had an online worker at some point)
+     "fresh": false, →  Indicates if an address is new (true if haven't mined before, false if  it has had an online worker at some point)
+     "address": "A_VALID_TRX_ADDRESS", →  The requested address (exactly as on our database)
+     "memo": "A_MEMO_VALUE", →  The requested memo (exactly as on our database)
+     "err_flags": {
+        "payment_error": false, →  Indicates whether the address has a payment error, usually when the system is unable to pay the funds due to an invalid address error.
+        "missing_memo": false, →  Indicates whether the address requires a memo to get paid correctly (usually when mining XRP or similar coins to an exchange).
+        "not_activated": false, →  Indicates whether the address isn't activated (for XRP addresses that require activation to get paid).
+        "restricted": false →  Indicates whether the address is restricted to use the platform (botnets or similar suspected activities)
+     }
     }
 }
 ```
@@ -197,6 +208,7 @@ Output example:
  "data": {
      "balance": "10.26909",  →  Current total pending balance.
      "balance_payable": "10.26909",  →  Total pending payable balance (some coins like NEO doesn't have decimals, thus this value is different (rounded) from the "balance").
+     "precision": "8",  →  Balance decimal positions
      "payment_threshold": "15",  →  Current payment threshold.
      "mining_fee": "0.75",   →  Can also be: "1", if no referral code is being used.
      "auto": false,  →  Indicates whether auto payment is on (true) or off (false) for the uuid.
