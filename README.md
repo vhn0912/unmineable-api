@@ -92,7 +92,17 @@ Output example:
             "regex": "^T[1-9A-HJ-NP-Za-km-z]{33}$", → Validation RegExp (for address)
             "regex_memo": null, →  Validation RegExp (for memo / payment tag)
             "top": 1, → Indicates whether a coin should be at the top of the list (1) or not (0).
-            "logo": "https://www.unmineable.com/img/logos/BTT.png?v1" → Coin logo (hosted on the website)
+            "logo": "https://www.unmineable.com/img/logos/BTT.png?v1", → Coin logo (hosted on the website)
+            "chains": [
+                {
+                    "name": "TRON", → Network name
+                    "network": "TRX", → Network symbol
+                    "token_standard": "TRC20", → Token type, if the coin is a token in a network.
+                    "regex": "^T[1-9A-HJ-NP-Za-km-z]{33}$", → Validation RegExp (for address)
+                    "regex_memo": null, →  Validation RegExp (for memo / payment tag)
+                    "is_default": true  → Indicates whether the network is the default one or not
+                }
+            ]
         },
         {
             "symbol": "MATIC",
@@ -102,7 +112,33 @@ Output example:
             "regex": "^(0x)[0-9A-Fa-f]{40}$",
             "regex_memo": null,
             "top": 1,
-            "logo": "https://www.unmineable.com/img/logos/MATIC.png"
+            "logo": "https://www.unmineable.com/img/logos/MATIC.png",
+            "chains": [
+                {
+                    "name": "Binance Smart Chain",
+                    "network": "BSC",
+                    "token_standard": "BEP20",
+                    "regex": "^(0x)[0-9A-Fa-f]{40}$",
+                    "regex_memo": null,
+                    "is_default": false
+                },
+                {
+                    "name": "Ethereum",
+                    "network": "ETH",
+                    "token_standard": "ERC20",
+                    "regex": "^(0x)[0-9A-Fa-f]{40}$",
+                    "regex_memo": null,
+                    "is_default": true
+                },
+                {
+                    "name": "Polygon",
+                    "network": "MATIC",
+                    "token_standard": "Polygon",
+                    "regex": "^(0x)[0-9A-Fa-f]{40}$",
+                    "regex_memo": null,
+                    "is_default": false
+                }
+            ]
         },
         {
             "symbol": "SHIB",
@@ -112,7 +148,33 @@ Output example:
             "regex": "^(0x)[0-9A-Fa-f]{40}$",
             "regex_memo": null,
             "top": 1,
-            "logo": "https://www.unmineable.com/img/logos/SHIB.png"
+            "logo": "https://www.unmineable.com/img/logos/SHIB.png",
+            "chains": [
+                {
+                    "name": "Binance Smart Chain",
+                    "network": "BSC",
+                    "token_standard": "BEP20",
+                    "regex": "^(0x)[0-9A-Fa-f]{40}$",
+                    "regex_memo": null,
+                    "is_default": false
+                },
+                {
+                    "name": "Ethereum",
+                    "network": "ETH",
+                    "token_standard": "ERC20",
+                    "regex": "^(0x)[0-9A-Fa-f]{40}$",
+                    "regex_memo": null,
+                    "is_default": true
+                },
+                {
+                    "name": "Kucoin Community Chain",
+                    "network": "KCC",
+                    "token_standard": "KRC20",
+                    "regex": "^(0x)[0-9A-Fa-f]{40}$",
+                    "regex_memo": null,
+                    "is_default": false
+                }
+            ]
         },
         (...)
     ]
@@ -144,7 +206,22 @@ Output example:
         "regex_memo": null, → Validation RegExp (for memo / payment tag)
         "payment_threshold": 30, → Coin payment threshold
         "payment_enabled": true, → Indicates whether payments are enabled (true) or under maintenance (false)
-        "logo": "https://www.unmineable.com/img/logos/DOGE.png"
+        "logo": "https://www.unmineable.com/img/logos/DOGE.png",
+        "high_risk": false, → Indicates whether the coin or token has very high volatility
+        "chains": [
+            {
+                "name": "Dogecoin", → Network name
+                "network": "DOGE", → Network symbol
+                "token_standard": null, → Token type, if the coin is a token in a network.
+                "regex": "^(D|A|9)[a-km-zA-HJ-NP-Z1-9]{33,34}$", → Validation RegExp (for address)
+                "regex_memo": null, → Validation RegExp (for memo / payment tag)
+                "is_default": true, → Indicates whether the network is the default one or not
+                "explorer_address": "https://dogechain.info/address/", → Explorer base link for address (on network)
+                "enabled": true, → Indicates whether the network is the default one or not
+                "enabled_auto_only": false,  → When auto payments are disabled, indicates whether only AUTO payments are enabled (true) or not (false).
+                "payment_threshold": "30" → Payment threshold for the network
+            }
+        ]
     }
 }
 ```
@@ -179,12 +256,29 @@ Output example:
      "fresh": false, →  Indicates if an address is new (true if haven't mined before, false if  it has had an online worker at some point)
      "address": "A_VALID_TRX_ADDRESS", →  The requested address (exactly as on our database)
      "memo": "A_MEMO_VALUE", →  The requested memo (exactly as on our database)
+     "network": "TRX", → Selected payout network
      "err_flags": {
         "payment_error": false, →  Indicates whether the address has a payment error, usually when the system is unable to pay the funds due to an invalid address error.
         "missing_memo": false, →  Indicates whether the address requires a memo to get paid correctly (usually when mining XRP or similar coins to an exchange).
         "not_activated": false, →  Indicates whether the address isn't activated (for XRP addresses that require activation to get paid).
         "restricted": false →  Indicates whether the address is restricted to use the platform (botnets or similar suspected activities)
-     }
+     },
+     "chains": [
+            {
+                "name": "TRON", → Payout network name
+                "network": "TRX", → Network symbol
+                "token_standard": null, → Token type, if the coin is a token in a network.
+                "regex": "^T[1-9A-HJ-NP-Za-km-z]{33}$", → Validation RegExp (for address)
+                "regex_memo": null, → Validation RegExp (for memo / payment tag)
+                "is_default": true, → Indicates whether the network is the default one or not
+                "explorer_address": "https://tronscan.org/#/address/", → Explorer base link for address (on network)
+                "enabled": true, →  Indicates whether payments are enabled (true) or under maintenance (false).
+                "enabled_auto_only": false, →  Indicates whether only auto payments are enabled (true) or not (false), while payments are under maintenance (enabled = false).
+                "payment_threshold": "15", → Payment threshold for the network
+                "compatible": true, → Indicates if the address is compatible with the network
+                "contract": null → Smart contract address (if the coin is a token on a network)
+            }
+        ]
     }
 }
 ```
@@ -213,7 +307,9 @@ Output example:
      "mining_fee": "0.75",   →  Can also be: "1", if no referral code is being used.
      "auto": false,  →  Indicates whether auto payment is on (true) or off (false) for the uuid.
      "enabled": true, →  Indicates whether payments are enabled (true) or under maintenance (false).
-     "uuid": "22d53b0b-24a2-4c1d-9f56-175d3a2e"
+     "uuid": "22d53b0b-24a2-4c1d-9f56-175d3a2e",
+     "coin": "TRX", →  Coin symbol
+     "network": "TRX" →  Selected payout network symbol
     }
 }
 ```
@@ -246,7 +342,9 @@ Output example:
         "paid": "0", →  Total paid until current time, the amount is cached by every 15 minutes.
         "last_payment": null, →  Timestamp for the last payment.
         "payment_threshold": "30", →  Current payment threshold.
-        "mining_fee": "0.75" →  Can also be: "1", if no referral code is being used in any worker.
+        "mining_fee": "0.75", →  Can also be: "1", if no referral code is being used in any worker.
+        "coin": "TRX", →  Coin symbol
+        "network": "TRX" →  Selected payout network symbol
     }
 }
 ```
@@ -383,6 +481,8 @@ Output example:
                 "timestamp": 1610035918000, → Timestamp of the payment request.
                 "status": "success", → Payment status: "pending", "processing", "success" and "error"
                 "id": 379743, → Internal id
+                "network": "TRX", → Network used for the payout
+                "explorer": "https://tronscan.org/#/transaction/", → Base explorer URL (for checking the tx on the blockchain)
                 "reason": "INVALID_ADDRESS" → Error in payment reason (only available when the payment is in "error" status.)
             },
             (...up to 10 rows)
